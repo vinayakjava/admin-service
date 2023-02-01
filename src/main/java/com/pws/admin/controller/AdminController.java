@@ -3,8 +3,10 @@ package com.pws.admin.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.pws.admin.utility.SwaggerLogsConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -60,10 +62,10 @@ public class AdminController {
     @Operation(summary = "SignUp")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "SignUp Successfull",
-                    content = { @Content(mediaType = "application/json"
+                    content = { @Content(mediaType = "application/json",examples = {@ExampleObject(value = SwaggerLogsConstants.SIGNUP_201_SUCCESS)}
                     ) }),
             @ApiResponse(responseCode = "400", description = "Bad Request",
-                    content = @Content),
+                    content ={ @Content(mediaType = "application/json",examples = {@ExampleObject(value = SwaggerLogsConstants.SIGNUP_400_FAILURE)})}),
             @ApiResponse(responseCode = "404", description = "Invalid Credentials",
                     content = @Content) })
     @PostMapping("public/signup")
@@ -72,14 +74,13 @@ public class AdminController {
         return CommonUtils.buildResponseEntity(new ApiSuccess(HttpStatus.CREATED));
     }
 
-    @Operation(summary = "Authenticate Admin")
+    @Operation(summary = "Login")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User Found",
-                    content = { @Content(mediaType = "application/json") }),
-            @ApiResponse(responseCode = "400", description = "Invalid UserName/Password supplied",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found",
-                    content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Authenticated successfully", content = {
+                    @Content(mediaType = "application/json",examples = {@ExampleObject(value = SwaggerLogsConstants.Authenticate_200_SUCCESS)}) }),
+            @ApiResponse(responseCode = "400", description = "Invalid UserName/Password supplied", content = {
+                    @Content(mediaType = "application/json",examples = {@ExampleObject(value = SwaggerLogsConstants.Authenticate_400_Failure)})}),
+            @ApiResponse(responseCode = "404", description = "User Not Found", content = @Content) })
 	@PostMapping("/authenticate")
 	public String generateToken(@RequestBody LoginDTO loginDTO) throws Exception {
 		try {
