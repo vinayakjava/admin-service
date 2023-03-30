@@ -1,5 +1,7 @@
 package com.pws.admin.service;
 
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,19 +18,29 @@ import com.pws.admin.entity.User;
 import com.pws.admin.entity.UserRoleXref;
 import com.pws.admin.exception.config.PWSException;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 /**
  * @Author Vinayak M
  * @Date 09/01/23
  */
 public interface AdminService {
 
+    void sendOTP(String email) throws PWSException, MessagingException, UnsupportedEncodingException;
     void UserSignUp(SignUpDTO signupDTO) throws PWSException;
 
     //Update Password Service
-  	
-    	void updateUserPassword(UpdatePasswordDTO userPasswordDTO)throws PWSException;
+
+    void updateUserPassword(UpdatePasswordDTO userPasswordDTO)throws PWSException;
 
     //Role Services
+
+    void updateResetPasswordToken(Integer otp, String email, LocalDateTime expirationTime) throws PWSException;
+
+    User getByResetPasswordToken(Integer otp)throws PWSException;
+
+    void updatePassword(Integer otp, String newPassword, String confirmPassword, LocalDateTime currentTime)throws PWSException;
 
     void addRole(Role role) throws PWSException;
 
@@ -38,13 +50,13 @@ public interface AdminService {
 
     Optional<Role> fetchRoleById(Integer id) throws PWSException;
 
-    void deactivateOrActivateRoleById(Integer id,  boolean flag) throws PWSException;
+    void deactivateOrActivateRoleById(Integer id, boolean flag) throws PWSException;
 
     //Module Service
 
     void addModule(Module module) throws PWSException;
 
-    void updateRole(Module module) throws PWSException;
+    void updateModule(Module module) throws PWSException;
 
     List<Module> fetchAllModule() throws PWSException;
 
@@ -75,7 +87,7 @@ public interface AdminService {
     void deactivateOrActivatePermissionById(PermissionDTO permissionDTO) throws PWSException;
 
     UserBasicDetailsDTO getUserBasicInfoAfterLoginSuccess(String  email) throws PWSException;
-    
+
 
     void addskill(Skill skill) throws PWSException;
 
@@ -84,13 +96,13 @@ public interface AdminService {
     List<Skill> fetchAllSkills() throws PWSException;
 
     Optional<Skill> fetchskillById(Integer id) throws PWSException;
-    
+
     void deleteskillById(Integer id) throws PWSException;
 
 
 
 
-	
+
 
 
 }
