@@ -1,6 +1,7 @@
 package com.pws.admin.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,7 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User extends AuditModel implements UserDetails, Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -62,23 +63,30 @@ public class User extends AuditModel implements UserDetails, Serializable{
 	@ColumnDefault("TRUE")
 	private Boolean isActive;
 
-	
+
+	@Column(name = "reset_password_otp")
+	private Integer resetPasswordOtp;
+
+	@Column(name = "reset_password_expiry")
+	private LocalDateTime ResetPasswordExpiry;
+
+
 	@Override
 	public String getUsername() {
 		return email;
 	}
-	
+
 
 	@Override
 	public String getPassword() {
 		return password;
 	}
-	
+
 
 	public int getUId() {
 		return id;
 	}
-	
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -104,6 +112,9 @@ public class User extends AuditModel implements UserDetails, Serializable{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 
 //	@Override
 //	public String getPassword() {
